@@ -1,0 +1,98 @@
+body {
+    margin: 0px;
+    height: 100%;
+    font-family: "Roboto";
+}
+
+#navbar {
+    position: relative;
+    display: block;
+    box-sizing: border-box;
+    padding-top: 15px;
+    padding-left: 45px;
+    padding-bottom: 10px;
+    padding-right: 45px;
+    top: 0%;
+    left: 0%;
+    height: 10%;
+    width: 100%;
+    background-color: #93c9ff;
+    font-family: "Roboto";
+}
+
+#navbar h1 {
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
+}
+
+#buttons {
+    position: relative;
+    height: 100%;
+    vertical-align: top;
+    width: auto;
+    float: right;
+    top: 0%;
+    display: inline-block;
+}
+
+#main_container {
+    position: absolute;
+    padding: 150px;
+    padding-top: 80px;
+    height: 90.5%;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-top: 0.2em solid #007fff;
+    font-family: "Roboto";
+    transition: 0.3s ease all;
+}
+
+input[type="text"]{
+    height: 5%;
+    width: 300px;
+    outline: none;
+    border: 0px;
+    border-bottom: 0.15em solid #007fff;
+    font-family: "Roboto";
+    font-weight: 300;
+    padding: 15px;
+    font-size: 20px;
+}
+
+.input {
+    margin-left: 10px;
+}
+
+input[type="text"]:focus {
+    border-bottom: 0.15em solid #0056ad;
+}
+
+#google_map {
+    position: relative;
+    height: 80%;
+    width: 100%;
+    margin-top: 30px;
+    background-color: #e5e5e5;
+    margin-bottom: 20px;
+}
+
+#main_container h2 {
+    margin: 0px;
+    font-weight: 300;
+}
+
+#locations_length {
+    font-weight: bold;
+    color: red;
+}
+
+#return_home {
+    font-weight: 400 !important;
+    font-family: "Roboto Mono";
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none !important;
+    color: #000 !important;
+}

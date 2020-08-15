@@ -1,0 +1,174 @@
+body {
+    margin: 0px;
+    height: 100%;
+    font-family: "Roboto";
+}
+
+#navbar {
+    position: relative;
+    display: block;
+    box-sizing: border-box;
+    padding-top: 15px;
+    padding-left: 45px;
+    padding-bottom: 10px;
+    padding-right: 45px;
+    top: 0%;
+    left: 0%;
+    height: 10%;
+    width: 100%;
+    background-color: #fff;
+    font-family: "Roboto";
+}
+
+#navbar h1 {
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
+}
+
+#buttons {
+    position: relative;
+    height: 100%;
+    vertical-align: top;
+    width: auto;
+    float: right;
+    top: 0%;
+    display: inline-block;
+}
+
+#main_container {
+    position: absolute;
+    padding-top: 30px;
+    padding-left: 80px;
+    padding-bottom: 30px;
+    padding-right: 80px;
+    height: 90.5%;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #93c9ff;
+    border-top: 0.2em solid #007fff;
+    font-family: "Roboto";
+}
+
+#container_inside {
+    position: absolute;
+    height: 80%;
+    width: 80%;
+    left: 10%;
+    top: 10%;
+}
+
+#container_left {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+}
+
+#container_right {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    left: 50%;
+    box-sizing: border-box;
+    padding-left: 5%;
+}
+
+#container_left h1 {
+    font-family: "Roboto";
+    font-weight: 900;
+    font-size: 250%;
+}
+
+#container_left h2 {
+    font-size: 200%;
+    font-weight: normal;
+}
+
+.covid-info {
+    position: relative;
+    height: 10%;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.covid-info-left {
+    position: relative;
+    width: 10%;
+    height: 100%;
+    display: inline-block;
+    float: left;
+}
+
+.covid-info-right {
+    position: relative;
+    width: 90%;
+    height: 100%;
+    float: left;
+    font-size: 108%;
+    font-weight: normal;
+    padding: 0%;
+    padding-left: 5px;
+    box-sizing: border-box;
+    padding-top: 0%;
+}
+
+.covid-info-right h3 {
+    font-weight: 400;
+    color: #680000;
+    margin: 10px;
+}
+
+.image {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#corona-global {
+    position: relative;
+    height: 30%;
+    width: 30%;
+    background-image: url("photos/covid-world.png")
+}
+
+.button {
+    position: relative;
+    height: 10%;
+    width: 50%;
+    font-weight: 400;
+    transition: 0.3s all ease;
+    cursor: pointer;
+    margin-bottom: 10px;
+    color: #000 !important;
+}
+
+.button h3 {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+#find_case {
+    background-color: #6aa84f;
+    border: 0.1em solid #437c29;
+}
+
+#report {
+    background-color: #c42121;
+    border: 0.1em solid #751818;
+}
+
+#find_case:hover {
+    background-color: #437c29;
+}
+
+#report:hover {
+    background-color: #751818;
+}
+
+#adminstrator_login {
+    color: #000 !important;
+    text-decoration: none;
+}

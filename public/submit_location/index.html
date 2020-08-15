@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <link rel="stylesheet" href="stylesheet.css">
+    <script src="../jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;1,200&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;900&display=swap" rel="stylesheet">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyBDX5_ZAFzLtVBlwi5sk-OGsO0XBnrVQ&libraries=places&callback=initMap"></script>
+
+    <div id="navbar">
+        <h2>COVID-19 Locations</h2>
+        <title>COVID-19 Locations | Location Submission</title>
+    </div>
+
+    <div id="main_container">
+        <a href="../" style="color: #000; text-decoration: none;"><h3 id="return_home">&lt;&lt; RETURN TO HOME</h3></a>
+        <h1 id="message_holder">Anonymously report a location you've been to as a COVID-19 patient</h1>
+        <input type="text" id="location_prompt" placeholder="Enter a location here"></input>
+        <input type="text" id="email" placeholder="Enter your email here" class="input" autocomplete="off"></input>
+        <input type="text" id="gov_id_no" placeholder="Enter your government ID no. here" class="input"></input>
+        <div id="google_map"></div>
+        <div class="file_upload">
+            <h3>Enter a digital copy of your ID:</h3>
+            <input type="file" id="photo_gov_id"></input>
+        </div>
+        <div class="file_upload">
+            <h3>Upload a digital copy of your diagnosis letter:</h3>
+            <input type="file" id="photo_diagnosis"></input>
+        </div>
+        <div id="submit">
+            <h3>Submit</h3>
+        </div>
+    </div>
+
+    <script>
+
+        var socket = io.connect("/submit_location");
+        var coords = {};
+        var placeID = "";
+
+        function initMap(){
+
+            var jakarta = {lat: -6.21462, lng: 106.84513};
+            var map = new google.maps.Map(document.getElementById('google_map'), {zoom: 10, center: jakarta});
+
+            var input = document.getElementById("location_prompt");
+            var infowindow = new google.maps.InfoWindow();
+
+            var options = {
+                "componentRestrictions": {
+                    country: "ID"
+                }
+            }
+
+            var autocomplete = new google.maps.places.Autocomplete(input, options);
+
+            var marker = new google.maps.Marker({
+                map: map,
+                anchorPoint: new google.maps.Point(0, -29)
+            });
+
+            autocomplete.addListener("place_changed", function(){
+
+                place = autocomplete.getPlace();
+
+                if (!place.geometry){
+                    alert("Unable to load details for the inputted location");
+                } else {
+
+                    map.fitBounds(place.geometry.viewport);
+                    marker.setPosition(place.geometry.location);
+                    
+                    coords.lat = autocomplete.getPlace().geometry.location.lat();
+                    coords.lng = autocomplete.getPlace().geometry.location.lng();
+
+                    console.log(coords);
+
+                    placeID = place.place_id;
+
+                    marker.setVisible(true);
+
+                }
+
+            });
+
+            document.getElementById("submit").onclick = function(){
+
+                var fields = {
+                    "location_name": document.getElementById("location_prompt").value,
+                    "email": document.getElementById("email").value,
+                    "gov_id_no": document.getElementById("gov_id_no").value,
+                    "photo_gov_id": photo_gov_id,
+                    "photo_diagnosis": photo_diagnosis,
+                    "placeID": placeID,
+                    "coords": coords,
+                    "date_reported": new Date().getTime()
+                }
+
+                console.log(fields);
+
+                document.getElementById("message_holder").innerHTML = "Submitting your report...";
+                socket.emit("fields", fields);
+
+                setTimeout(function(){
+                    window.location = "../success";
+                }, 2000);
+
+            }
+
+        }
+
+        socket.on("server_alert", function(message){
+            document.getElementById("message_holder").innerHTML = "Anonymously report a location you've been to as a COVID-19 patient";
+            alert(message);
+        });
+
+        var photo_gov_id = "";
+        var photo_diagnosis = "";
+
+        $("#photo_gov_id").change(function(){
+
+            if (this.files && this.files[0]) {
+
+                var FR = new FileReader();
+                
+                FR.addEventListener("load", function(e) {
+                    console.log("Received image");
+                    photo_gov_id = e.target.result;
+                }); 
+                
+                FR.readAsDataURL( this.files[0] );
+
+            }
+
+        }); 
+
+
+        $("#photo_diagnosis").change(function(){
+
+            if (this.files && this.files[0]) {
+
+                var FR = new FileReader();
+                
+                FR.addEventListener("load", function(e) {
+                    console.log("Received image");
+                    photo_diagnosis = e.target.result;
+                }); 
+                
+                FR.readAsDataURL( this.files[0] );
+
+            }
+
+        }); 
+    </script>
+
+</html>

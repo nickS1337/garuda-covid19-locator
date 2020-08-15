@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <link rel="stylesheet" href="stylesheet.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;900&display=swap" rel="stylesheet">
+
+    <div id="navbar">
+        <h2>COVID-19 Locations</h2>
+    </div>
+
+    <title>COVID-19 Locations | Home</title>
+
+    <div id="main_container">
+        <div id="container_inside">
+            <div id="container_left">
+                <h1>Find a COVID-19 Location Near You</h1>
+                <h2>Stay safe. Find a location a COVID-19 infected patient has visited.</h2>
+                <div class="covid-info">
+                    <div class="covid-info-left image" style='background-image: url("photos/coughing.png");'></div>
+                    <div class="covid-info-right"><h3>Many COVID-19 patients spread the virus before they know they're infected. <a href="http://www.emro.who.int/health-topics/corona-virus/transmission-of-covid-19-by-asymptomatic-cases.html" style="text-decoration: none; color: blue;" target="_blank">World Health Organisation</a>.</h3></div>
+                </div>
+                <div class="covid-info">
+                    <div class="covid-info-left image" style='background-image: url("photos/sick.png");'></div>
+                    <div class="covid-info-right"><h3>Stay home if you have a fever or a cough. You could have COVID-19. <a href="https://www.google.com/search?q=testing+centres+near+me+for+covid&oq=testing+centres+near+me" style="text-decoration: none; color: blue;" target="_blank">Find a testing centre near you</a>.</h3></div>
+                </div>
+                <div class="covid-info">
+                    <div class="covid-info-left image" style='background-image: url("photos/mask.png");'></div>
+                    <div class="covid-info-right"><h3>Wear a mask when you go out. Wearing a mask significantly reduces your risk of contracting the virus. <a href="hhttps://www.who.int/emergencies/diseases/novel-coronavirus-2019/question-and-answers-hub/q-a-detail/q-a-on-covid-19-and-masks" style="text-decoration: none; color: blue;" target="_blank">World Health Organisation</a>.</h3></div>
+                </div>
+                <div class="covid-info">
+                    <div class="covid-info-left image" style='background-image: url("photos/spread.png");'></div>
+                    <div class="covid-info-right"><h3>Avoid social gatherings. COVID-19 Spreads from person to person. <a href="https://www.cdc.gov/coronavirus/2019-ncov/community/large-events/considerations-for-events-gatherings.html" style="text-decoration: none; color: blue;" target="_blank">Centers for Disease Control and Prevention</a>.</h3></div>
+                </div>
+                <div class="covid-info">
+                    <div class="covid-info-left image" style='background-image: url("photos/distance.png");'></div>
+                    <div class="covid-info-right"><h3>Keep your distance from other people to avoid being infected. <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public" style="text-decoration: none; color: blue;" target="_blank">World Health Organisation</a>.</h3></div>
+                </div>
+                <div class="covid-info">
+                    <div class="covid-info-left image" style='background-image: url("photos/wash.png");'></div>
+                    <div class="covid-info-right"><h3>Wash your hands frequently to avoid ingesting the virus. <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public" style="text-decoration: none; color: blue;" target="_blank">World Health Organisation</a>.</h3></div>
+                </div>
+            </div>
+            <div id="container_right">
+                <div id="corona-global" class="image"></div>
+                <h1 id="cases"></h1>
+                <a href="location_checker/"><div class="button" id="find_case">
+                    <h3>CHECK YOUR LOCATION NOW</h3>
+                </div></a>
+                <a href="submit_location/"><div class="button" id="report">
+                    <h3>REPORT LOCATIONS AS A PATIENT</h3>
+                </div></a>
+                <a href="auth/" style="text-decoration: none; color: #000;"><h3 id="adminstrator_login">Administrator Login</h3></a>
+                <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        fetch("https://coronavirus-19-api.herokuapp.com/all").then(function(response) {
+            return response.json()
+        }).then(function(data) {
+            document.getElementById("cases").innerHTML = numberWithCommas(data.cases) + " cases globally";
+        });
+ 
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+    </script>
+
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <link rel="stylesheet" href="stylesheet.css">
+    <script src="../jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="framework.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;1,200&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;900&display=swap" rel="stylesheet">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyBDX5_ZAFzLtVBlwi5sk-OGsO0XBnrVQ&libraries=places&callback=initMap"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="jquery.zoom.min.js"></script>
+
+    <div id="navbar">
+        <h2>COVID-19 Locations</h2>
+    </div>
+
+    <div id="main_container">
+        <a href="../" style="color: #000; text-decoration: none;"><h3 id="return_home">&lt;&lt; RETURN TO HOME</h3></a>
+        <h1 id="report">Approve the latest reported cases</h1>
+        <div id="google_map">
+            <iframe id="map_iframe"></iframe>
+        </div>
+        <div id="view_report">
+            <div class="info_tile">
+                <div class="info_tile-right">
+                    <h3>Location Name</h3>
+                </div>
+                <div class="info_tile-left">
+                    <h3 id="location_name">Loading</h3>
+                </div>
+            </div>
+            <div class="info_tile">
+                <div class="info_tile-right">
+                    <h3>Date reported</h3>
+                </div>
+                <div class="info_tile-left">
+                    <h3 id="date_reported">Loading</h3>
+                </div>
+            </div>
+            <div class="info_tile">
+                <div class="info_tile-right">
+                    <h3>Coordinates</h3>
+                </div>
+                <div class="info_tile-left">
+                    <h3 id="coords">Loading</h3>
+                </div>
+            </div>
+            <div class="info_tile">
+                <div class="info_tile-right">
+                    <h3>Google Maps PlaceID</h3>
+                </div>
+                <div class="info_tile-left">
+                    <h3 id="placeid">Loading</h3>
+                </div>
+            </div>
+            <div class="info_tile">
+                <div class="info_tile-right">
+                    <h3>Patient Email</h3>
+                </div>
+                <div class="info_tile-left">
+                    <h3 id="email">Loading</h3>
+                </div>
+            </div>
+            <div class="info_tile">
+                <div class="info_tile-right">
+                    <h3>Patient Government ID</h3>
+                </div>
+                <div class="info_tile-left">
+                    <h3 id="gov_id">Loading</h3>
+                </div>
+            </div>
+            <div id="evidence_panel">
+                <div id="evidence_left">
+                    <h2>Diagnosis Evidence</h2>
+                    <div id="diagnosis_proof" class="image"></div>
+                </div>
+                <div id="evidence_right">
+                    <h2>Patient Government ID</h2>
+                    <div id="gov_id_photo" class="image"></div>
+                </div>
+            </div><br><br><br><br><br><br><br><br><br>
+            <h2>You may reject this report under any grounds you suspect that the data provided is illegitimate.</h2>
+            <div id="action_menu">
+                <div id="reject" class="button">
+                    <h3>REJECT THIS REPORT</h3>
+                </div>
+                <div id="approve" class="button">
+                    <h3>APPROVE THIS REPORT</h3>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        var socket = io.connect("/view_page");
+        var url = new URL(window.location.href);
+
+        var id = url.searchParams.get("id");
+
+        socket.emit("id", id);
+
+        socket.on("success", function(){
+            console.log("Redirecting");
+            window.location = "../success";
+        });
+
+        function initMap(){
+
+            socket.on("data", function(data){
+
+                var reported_date = new Date(data.date_reported);
+                var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                var location_string = reported_date.getDate() + " " + months[reported_date.getMonth()] + ", " + reported_date.getFullYear();
+
+                document.getElementById("map_iframe"). src = "https://www.google.com/maps/embed/v1/place?key=AIzaSyCyBDX5_ZAFzLtVBlwi5sk-OGsO0XBnrVQ&q=place_id:" + data.placeID_raw;
+                console.log("https://www.google.com/maps/embed/v1/place?key=AIzaSyCyBDX5_ZAFzLtVBlwi5sk-OGsO0XBnrVQ&q=place_id:" + data.placeID_raw);
+
+                var date_today = new Date();
+                var oneDay = 24 * 60 * 60 * 1000;
+                var days = Math.round(Math.abs((reported_date - date_today) / oneDay));
+
+                document.getElementById("location_name").innerHTML = data.location_name;
+                document.getElementById("email").innerHTML = data.email;
+                document.getElementById("coords").innerHTML = "(" + data.coords.lat + ", " + data.coords.lng + ")";
+                document.getElementById("placeid").innerHTML = data.placeID;
+                document.getElementById("date_reported").innerHTML = location_string + " (" + days + " days ago)";
+                document.getElementById("gov_id").innerHTML = data.patient_gov_id;
+
+                $("#diagnosis_proof").css({
+                    "background-image": "url('"+ data.diagnosis_proof +"')"
+                });
+
+                $("#gov_id_photo").css({
+                    "background-image": "url('"+ data.photo_gov_id +"')"
+                });
+
+                $("#diagnosis_proof").zoom({
+                    url: data.diagnosis_proof,
+                    magnify: 1.5
+                });
+
+                $("#gov_id_photo").zoom({
+                    url: data.photo_gov_id,
+                    magnify: 1.5
+                });
+
+                document.getElementById("reject").onclick = function(){
+                    socket.emit("reject", id);
+                }
+
+                document.getElementById("approve").onclick = function(){
+                    socket.emit("approve", id);
+                }
+
+            });
+
+        }
+
+        document.getElementById("report").innerHTML = "Viewing report " + id;
+
+    </script>
+
+</html> 

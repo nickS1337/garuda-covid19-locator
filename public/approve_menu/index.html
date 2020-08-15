@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <link rel="stylesheet" href="stylesheet.css">
+    <script src="../jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;1,200&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;900&display=swap" rel="stylesheet">
+ 
+    <div id="navbar">
+        <h2>COVID-19 Locations</h2>
+        <title>COVID-19 Locations | Approval Menu</title>
+    </div>
+
+    <div id="main_container">
+        <a href="../" style="color: #000; text-decoration: none;"><h3 id="return_home">&lt;&lt; RETURN TO HOME</h3></a>
+        <h1>Approve the latest reported cases</h1>
+        <h2>There are <a id="cases">0</a> pending cases in our system.</h2>
+        <div id="item_container">
+        </div>
+    </div>
+
+    <script>
+
+        var socket = io.connect("/approve_menu");
+
+        socket.on("item", function(data, no_cases){
+
+            var id = Math.random().toString();
+
+            $("#item_container").append('<div class="item" id="'+id+'"><h3>'+data.location_name+' (reported 0 days ago)</h3></div>');
+            document.getElementById("cases").innerHTML = no_cases;
+            console.log("There are " + no_cases + " available");
+
+            document.getElementById(id).onclick = function(){
+                window.location = "../view_page/?id=" + data.href;
+            }
+
+        });
+
+    </script>
+
+</html>

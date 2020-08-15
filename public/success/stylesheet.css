@@ -1,0 +1,90 @@
+body {
+    margin: 0px;
+    height: 100%;
+    font-family: "Roboto";
+}
+
+#navbar {
+    position: relative;
+    display: block;
+    box-sizing: border-box;
+    padding-top: 15px;
+    padding-left: 45px;
+    padding-bottom: 10px;
+    padding-right: 45px;
+    top: 0%;
+    left: 0%;
+    height: 10%;
+    width: 100%;
+    background-color: #93c9ff;
+    font-family: "Roboto";
+}
+
+#navbar h1 {
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
+}
+
+#buttons {
+    position: relative;
+    height: 100%;
+    vertical-align: top;
+    width: auto;
+    float: right;
+    top: 0%;
+    display: inline-block;
+}
+
+.image {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#main_container {
+    position: absolute;
+    padding: 150px;
+    padding-top: 80px;
+    height: 90.5%;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-top: 0.2em solid #007fff;
+    font-family: "Roboto";
+    transition: 0.3s ease all;
+}
+
+#success {
+    position: absolute;
+    height: 350px;
+    width: 150px;
+    left: 50%;
+    transform: translate(-50%);
+    text-align: center;
+    transform-style: preserve-3d;
+}
+
+#gear_tick {
+    height: 150px;
+    width: 150px;
+    background-image: url("gear_tick.png");
+    left: 50%;
+    transform-style: preserve-3d;
+    transition: 0.3s ease all;
+    transform: rotateY(-90deg);
+}
+
+#success h3 {
+    color: green;
+    display: none;
+}
+
+#return_home {
+    font-weight: 400 !important;
+    font-family: "Roboto Mono";
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none !important;
+    color: #000 !important;
+}

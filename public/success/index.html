@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <link rel="stylesheet" href="stylesheet.css">
+    <script src="../jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;900&display=swap" rel="stylesheet">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyBDX5_ZAFzLtVBlwi5sk-OGsO0XBnrVQ&libraries=places&callback=initMap"></script>
+
+    <div id="navbar">
+        <h2>COVID-19 Locations</h2>
+        <title>COVID-19 Locations | Success!</title>
+    </div>
+
+    <div id="main_container">
+        <div id="success">
+            <div id="gear_tick" class="image"></div>
+            <h3 id="gear_tick_h3">Success!<br>Processing soon. <br><br>Redirecting...</h3>
+        </div>
+    </div>
+
+    <script>
+        (function(){
+
+            setTimeout(function(){
+
+                $("#gear_tick").css({
+                    "transform": "rotateY(0deg)"
+                });
+                
+                $("#gear_tick_h3").fadeIn();
+            
+            }, 1000);
+
+            setTimeout(function(){
+                window.location = "../";
+            }, 5000);
+
+        })();
+    </script>
+
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <link rel="stylesheet" href="stylesheet.css">
+    <script src="../jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;1,200&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;900&display=swap" rel="stylesheet">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyBDX5_ZAFzLtVBlwi5sk-OGsO0XBnrVQ&libraries=places&callback=initMap"></script>
+
+    <div id="navbar">
+        <h2>COVID-19 Locations</h2>
+        <title>COVID-19 Locations | Location Checker</title>
+    </div>
+
+    <div id="main_container">
+        <a href="../" style="color: #000; text-decoration: none;"><h3 id="return_home">&lt;&lt; RETURN TO HOME</h3></a>
+        <h1>Location Checker</h1>
+        <h2>We found <a id="locations_length">0</a> reported locations</h2>
+        <h2 id="user_location_text">Your location is X at (-50.0123102, 30129.2020).</h2>
+        <h2 style="font-weight: bold;">Each marker is a COVID-19 reported location</h2>
+        <div id="google_map"></div>
+    </div>
+
+    <script>
+
+        var socket = io.connect("/location_checker");
+
+        function initMap(){
+
+            var jakarta = {lat: -6.21462, lng: 106.84513};
+            var map = new google.maps.Map(document.getElementById('google_map'), {zoom: 15, center: jakarta});
+
+            var input = document.getElementById("location_prompt");
+            var infoWindow = new google.maps.InfoWindow();
+
+            var options = {
+                "componentRestrictions": {
+                    country: "ID"
+                }
+            }
+
+            var marker = new google.maps.Marker({
+                map: map,
+                anchorPoint: new google.maps.Point(0, -20)
+            });
+
+            socket.on("location", function(data){
+
+                document.getElementById("locations_length").innerHTML = data.no_locations;
+                
+                new google.maps.Marker({
+                    position: new google.maps.LatLng(data.coords.lat, data.coords.lng),
+                    map: map,
+                    title: "COVID-19 Reported Location"
+                });
+
+            });
+
+            if (navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(function(position){
+
+                    const pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    document.getElementById("user_location_text").innerHTML = "Your location is (" + pos.lat + ", " + pos.lng + ")";
+
+                    socket.emit("location", pos);
+
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent("You are here.");
+                    infoWindow.open(map);
+                    map.setCenter(pos);
+                },
+                () => {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                }
+    );
+            }
+
+        }
+
+    </script>
+
+</html>

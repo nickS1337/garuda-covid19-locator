@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <link rel="stylesheet" href="stylesheet.css">
+    <script src="../jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;1,200&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;900&display=swap" rel="stylesheet">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyBDX5_ZAFzLtVBlwi5sk-OGsO0XBnrVQ&libraries=places&callback=initMap"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <div id="navbar">
+        <h2>COVID-19 Locations</h2>
+    </div>
+
+    <div id="main_container">
+        <div id="signin_menu">
+            <a href="../" style="color: #000; text-decoration: none;"><h3 id="return_home">&lt;&lt; RETURN TO HOME</h3></a>
+            <h1>Sign in</h1>
+            <input type="text" class="signin" placeholder="Email"></input>
+            <input type="password" class="signin" placeholder="Access Token"></input>
+            <div id="login">
+                Login
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        var socket = io.connect("/submit_location");
+        document.getElementById("login").onclick = function(){
+            window.location = "../approve_menu";
+        }
+
+    </script>
+
+</html>
